@@ -1,4 +1,3 @@
-
 <app-filter-textbox></app-filter-textbox>
 <br />
 <br />
@@ -10,7 +9,7 @@
             <th (click)="sort('orderTotal')">Order Total</th>
         </tr>
     </thead>
-    <tbody [hidden]="!tableVisible">
+    <tbody >
         <tr *ngFor="let cust of filteredCustomers">
             <td>
                 <a>
