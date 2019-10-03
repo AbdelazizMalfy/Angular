@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map , catchError } from 'rxjs/operators';
 
-import { ICustomer } from '../shared/interfaces';
+import { ICustomer, IOrder } from '../shared/interfaces';
 
 
 @Injectable()
@@ -14,7 +14,7 @@ export class DataService {
     constructor(private http: HttpClient){}
 
 
-    // THIS REQUEST GETS ALL CUSTOMERS
+    //GETS ALL CUSTOMERS
     getCustomers() : Observable<ICustomer[]> {
         return this.http.get<ICustomer[]>(this.baseUrl + '/customers.json')
             .pipe(
@@ -22,9 +22,9 @@ export class DataService {
             )
     }
 
-    // THIS REQUEST GETS ONLY ONE CUSTOMER
+    //GETS ONLY ONE CUSTOMER
     getCustomer(id: number): Observable<ICustomer>  {
-        return this.http.get<ICustomer[]>(this.baseUrl + '/orders.json')
+        return this.http.get<ICustomer[]>(this.baseUrl + '/customers.json')
             .pipe(
                 map(customers => {
                     let customer = customers.filter((cust:ICustomer)=> cust.id === id)
@@ -33,6 +33,20 @@ export class DataService {
                 catchError(this.handleError)
             )
     }
+
+    // GETS ALL THE ORDERS
+    getOrders(id: number) : Observable<IOrder[]> {
+        return this.http.get<IOrder[]>(this.baseUrl+ '/orders/json')
+            .pipe(
+                map( orders => {
+                    let custOrders = orders.filter((order: IOrder) =>  order.customerId === id);
+                    return custOrders
+                }),
+                catchError(this.handleError)
+            )
+            )
+    } 
+
 
     private handleError(error: any) {
         console.error('server error:', error);
